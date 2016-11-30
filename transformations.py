@@ -10,10 +10,13 @@ import math
 class Transform(object):
     def __init__(self):
         pass
-        
-    # As Walsh-Hadamard and Hadamard matrices only work for n = 2**k, 
-    # we need to preprocess x to have the correct size
+
+
     def preprocess(self,x):
+        """
+        As Walsh-Hadamard and Hadamard matrices only work for n = 2**k,
+        we need to preprocess x to have the correct size
+        """
         n = len(x)
         k = 1
         while (2**k < n):
@@ -23,7 +26,7 @@ class Transform(object):
             n = 2**k
             x = np.concatenate([x,np.zeros(m)])
         return x
-    
+
     def HD3(self,x):
         x = self.preprocess(x)
         n = len(x)
@@ -38,20 +41,20 @@ class Transform(object):
         DHDHDx = D1*HDHDx
         HDHDHDx = np.dot(H,DHDHDx)
         return HDHDHDx
-              
+
     def JLT(self,x,N=2,eps = 0.25,m=-1):
         if (m < 1):
             m = int(math.ceil(8*math.log(N)/(eps**2)))
-        
+
         n = len(x)
         G = 1/math.sqrt(m) * np.random.normal(0,1,(m,n))
         return np.dot(G,x)
-    
+
     def G_circ(self, x):
         n = len(x)
         Gx = fftconvolve(np.random.normal(0,1,n),x, mode = 'same')
         return Gx
-    
+
     def GD(self,x):
         n = len(x)
         G = np.random.normal(0,1,n)
@@ -59,7 +62,7 @@ class Transform(object):
         Dx = D*x
         GDx = fftconvolve(G,Dx,mode='same')
         return GDx
-    
+
     def GDH(self,x):
         x = self.preprocess(x)
         n = len(x)
@@ -69,12 +72,12 @@ class Transform(object):
         DHx = D*Hx
         GDHx = fftconvolve(G,DHx, mode = 'same')
         return GDHx
-        
-        
+
+
     # TO DO
     def FJLT(self,x,N,eps=0.25,m=-1):
         if (m < 1):
-            m = int(math.ceil(8*math.log(N)/(eps**2)))        
+            m = int(math.ceil(8*math.log(N)/(eps**2)))
         n = len(x)
 
 T = Transform()
