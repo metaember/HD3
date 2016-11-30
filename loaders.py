@@ -14,14 +14,14 @@ def load_data(dataset, batch = None):
     check_dataset(dataset)
 
     if dataset.startswith("cifar"):
-        assert batch in range(6)
+        assert batch is not None and batch in range(6)
 
     if dataset == "mnist":
         return load_data_mnist()
     elif dataset == "cifar10":
-        pass
+        return load_data_cifar(10, batch)
     elif dataset == "cifar100":
-        pass
+        return load_data_cifar(100, batch)
     else:
         assert False
 
@@ -175,22 +175,27 @@ def check_dataset(dataset):
     """
     Check if dataset is in the data directory. If not, will download it.
     """
+    dataset_names = dict()
+    dataset_names["mnist"] = "mnist.pkl.gz"
+    dataset_names["cifar10"] = "cifar-10-python.tar.gz"
+    dataset_names["cifar100"] = "cifar-100-python.tar.gz"
+
     new_path = os.path.join(
         os.path.split(__file__)[0],
         "data",
-        dataset
+        dataset_names[dataset]
     )
     f_name = os.path.join(
         os.path.split(__file__)[0],
         "data"
     )
-    
+    print(new_path)
     if (not os.path.isfile(new_path)):
         from six.moves import urllib
         if dataset in ("cifar10", "cifar100"):
-            origin = 'https://www.cs.toronto.edu/~kriz/' + dataset
+            origin = 'https://www.cs.toronto.edu/~kriz/' + dataset_names[dataset]
         else:
-            origin = "deeplearning.net/data/mnist/mnist.pkl.gz"
+            origin = "http://deeplearning.net/data/mnist/mnist.pkl.gz"
 
         print('Downloading data from {}'.format(origin))
         urllib.request.urlretrieve(origin, new_path)
