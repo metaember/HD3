@@ -137,6 +137,10 @@ def load_data_cifar(cifar_version, batch):
         raise ValueError("Cifar version must be 10 or 100")
 
 
+    # Check if the data folder is present
+    if not os.path.exists("data"):
+        os.makedirs("data")
+
     # Extract
     print("cwd: ", os.getcwd())
     tar = tarfile.open("data/cifar-{}-python.tar.gz".format(cifar_version))
