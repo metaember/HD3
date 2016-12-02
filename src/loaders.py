@@ -53,7 +53,7 @@ def load_data_mnist():
     That's done in the wrapper function ``load_data_wrapper_mnist()``, see
     below.
     """
-    with gzip.open('data/mnist.pkl.gz', 'rb') as f:
+    with gzip.open('../data/mnist.pkl.gz', 'rb') as f:
         training_data, validation_data, test_data = pickle.load(f, encoding='bytes')
     return (training_data, validation_data, test_data)
 
@@ -138,6 +138,7 @@ def load_data_cifar(cifar_version, batch):
 
 
     # Extract
+    print("cwd: ", os.getcwd())
     tar = tarfile.open("data/cifar-{}-python.tar.gz".format(cifar_version))
     file_names = tar.getnames()
     for file_name in file_names:
@@ -182,11 +183,13 @@ def check_dataset(dataset):
 
     new_path = os.path.join(
         os.path.split(__file__)[0],
+        "..",
         "data",
         dataset_names[dataset]
     )
     f_name = os.path.join(
         os.path.split(__file__)[0],
+        "..",
         "data"
     )
     print(new_path)

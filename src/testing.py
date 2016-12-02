@@ -3,4 +3,4 @@
 #
 
 from loaders import *
-load_data("cifar10")
+load_data("cifar10", batch = 1)
