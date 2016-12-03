@@ -2,10 +2,50 @@ from scipy.linalg import hadamard
 from scipy.linalg import circulant
 from scipy.signal import fftconvolve
 # WalsHadamard thanks to http://www.quantatrisk.com/files/wht/WalshHadamard.py
-from WalshHadamard import *
+#from WalshHadamard import *
 
 import numpy as np
 import math
+
+
+def transform(dataset, transformation, target_dimension):
+    transformations = ("hdhdhd", "gcircd", "pd")
+    transformation = transformation.lower()
+    if transformation not in transformations:
+        raise ValueError("Available transformations are : {}".format(", ".join(transformations)))
+
+    if transformation == "hdhdhd":
+        matrix = generate_hdhdhd()
+    elif transformation == "gcircd":
+        matrix = generate_gcircd()
+    elif transformation == "pd":
+        matrix = generate_pd()
+    else:
+        assert False
+
+    return np.dot(matrix, dataset)
+
+
+def generate_hdhdhd():
+    return
+
+def generate_gcircd():
+    return
+
+def generate_pd():
+    return
+
+def generate_d():
+    return
+
+def generate_h():
+    return
+
+def generate_g():
+    return
+
+def generate_gcirc():
+    return
 
 class Transform(object):
     def __init__(self):
