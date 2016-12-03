@@ -19,9 +19,9 @@ def load_data(dataset, batch = None):
     if dataset == "mnist":
         return load_data_mnist()
     elif dataset == "cifar10":
-        return load_data_cifar(10, batch)
+        return load_data_cifar(10, batch)[b'data']
     elif dataset == "cifar100":
-        return load_data_cifar(100, batch)
+        return load_data_cifar(100, batch)[b'data']
     else:
         assert False
 
