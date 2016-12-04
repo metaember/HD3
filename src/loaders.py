@@ -53,7 +53,7 @@ def load_data_mnist():
     That's done in the wrapper function ``load_data_wrapper_mnist()``, see
     below.
     """
-    with gzip.open('../data/mnist.pkl.gz', 'rb') as f:
+    with gzip.open('data/mnist.pkl.gz', 'rb') as f:
         training_data, validation_data, test_data = pickle.load(f, encoding='bytes')
     return (training_data, validation_data, test_data)
 
