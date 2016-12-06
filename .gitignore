@@ -1,2 +1,6 @@
 __pycache__/
-
+data/
+.ipynb_checkpoints/
+venv/
+TF tutorial.ipynb
+MNIST_data/
