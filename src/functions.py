@@ -4,23 +4,42 @@ class Functions:
 
     def __init__(self, type):
         self.type = type
+        self.func = self.get_func(type)
 
-    def apply(self, dataset):
+    def get_func(self, func_name):
+        """
+        Returns desired function by name
+        """
 
         if self.type == "identity":
             return dataset
         elif self.type == "sigmoid":
-            return (np.apply_along_axis(sigmoid, 0, dataset[0]), dataset[1])
+            return sigmoid
         elif self.type == "sigmoid_prime":
-            return (np.apply_along_axis(sigmoid_prime, 0, dataset[0]), dataset[1])
+            return sigmoid_prime
         elif self.type == "signum":
-            return (np.apply_along_axis(signum, 0, dataset[0]), dataset[1])
+            return signum
         elif self.type == "tanh":
-            return (np.apply_along_axis(tanh, 0, dataset[0]), dataset[1])
+            return tanh
         elif self.type == "softmax":
-            return (np.apply_along_axis(softmax, 0, dataset[0]), dataset[1])
+            return softmax
+        else:
+            raise NameError("Function {} does not exist".format(func_name))
 
 
+    def apply(self, dataset):
+        """
+        Apply a function over a dataset.
+        """
+        if self.type == "identity":
+            return dataset
+        else:
+            return (np.apply_along_axis(self.func, 0, dataset[0]), dataset[1])
+
+
+def identity(z):
+    """ Dunno why we want this but whatever """
+    return z
 
 def sigmoid(z):
     """The sigmoid function."""
