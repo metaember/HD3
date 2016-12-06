@@ -5,6 +5,7 @@
 '''
 import numpy as np
 import scipy as sp
+import scipy.linalg as linalg
 
 class Transformer:
   def __init__(self, type):
@@ -19,9 +20,8 @@ class Transformer:
         matrix = np.random.randn(dataset[0].shape[1], target_dimension)
         return (np.matmul(dataset[0], matrix), dataset[1])
     elif self.type == "g_circ":
-        matrix = np.transpose(sp.linalg.circulant(np.random.randn(dataset[0].shape[1]))[0:target_dimension, :])
+        matrix = np.transpose(linalg.circulant(np.random.randn(dataset[0].shape[1]))[0:target_dimension, :])
         return (np.matmul(dataset[0], matrix), dataset[1])
     # elif self.type == "hd3":
     #     matrix =
     #     return (np.matmul(dataset[0], matrix), dataset[1])
-

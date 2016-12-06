@@ -5,6 +5,8 @@ import os
 import numpy as np
 
 
+
+
 def load_data(dataset, batch = None):
     sets = ("mnist", "cifar10", "cifar100")
     dataset = dataset.lower()
@@ -53,6 +55,7 @@ def load_data_mnist():
     That's done in the wrapper function ``load_data_wrapper_mnist()``, see
     below.
     """
+    print("cwd: ", os.getcwd())
     with gzip.open('data/mnist.pkl.gz', 'rb') as f:
         training_data, validation_data, test_data = pickle.load(f, encoding='bytes')
     return (training_data, validation_data, test_data)
@@ -196,7 +199,7 @@ def check_dataset(dataset):
         "..",
         "data"
     )
-    print(new_path)
+    # print(new_path)
     if (not os.path.isfile(new_path)):
         from six.moves import urllib
         if dataset in ("cifar10", "cifar100"):

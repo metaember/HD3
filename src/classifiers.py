@@ -10,7 +10,7 @@ class Classifier:
         self.type = type
         self.framework = framework
 
-    def classify(self, dataset, percentage_train, percentage_test, batch_size, learning_rate):
+    def classify(self, dataset, percentage_train, percentage_test, batch_size, learning_rate, training_iterations = None, **kwargs):
 
         if self.type == "softmax":
             if self.framework == "tf":
@@ -23,7 +23,8 @@ class Classifier:
 
         elif self.type == "cnn":
             if self.framework == "tf":
-                return cl_tf.classify_with_conv_nn(dataset, percentage_train, percentage_test, batch_size, learning_rate)
+                return cl_tf.classify_with_conv_nn(dataset, percentage_train, percentage_test, batch_size,
+                    learning_rate, training_iterations, **kwargs)
             elif self.framework == "torch":
                 raise NotImplemented('Torch implementation not done yet')
             else:
