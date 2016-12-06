@@ -10,24 +10,24 @@ class Classifier:
         self.type = type
         self.framework = framework
 
-        def classify(self, dataset, percentage_train, percentage_test, batch_size, learning_rate):
+    def classify(self, dataset, percentage_train, percentage_test, batch_size, learning_rate):
 
-            if self.type == "softmax":
-                if self.framework == "tf":
-                    return cl_tf.classify_with_softmax_nn(dataset, percentage_train, percentage_test, batch_size, learning_rate)
-                elif self.framework == "torch":
-                    raise NotImplemented('Torch implementation not done yet')
-                else:
-                    raise NameError("Framework must be 'tf' or 'torch'")
-
-
-            elif self.type == "cnn":
-                if self.framework == "tf":
-                    return cl_tf.classify_with_conv_nn(dataset, percentage_train, percentage_test, batch_size, learning_rate)
-                elif self.framework == "torch":
-                    raise NotImplemented('Torch implementation not done yet')
-                else:
-                    raise NameError("Framework must be 'tf' or 'torch'")
-
+        if self.type == "softmax":
+            if self.framework == "tf":
+                return cl_tf.classify_with_softmax_nn(dataset, percentage_train, percentage_test, batch_size, learning_rate)
+            elif self.framework == "torch":
+                raise NotImplemented('Torch implementation not done yet')
             else:
-                raise NameError("Type must be 'softmax' or 'cnn'")
+                raise NameError("Framework must be 'tf' or 'torch'")
+
+
+        elif self.type == "cnn":
+            if self.framework == "tf":
+                return cl_tf.classify_with_conv_nn(dataset, percentage_train, percentage_test, batch_size, learning_rate)
+            elif self.framework == "torch":
+                raise NotImplemented('Torch implementation not done yet')
+            else:
+                raise NameError("Framework must be 'tf' or 'torch'")
+
+        else:
+            raise NameError("Type must be 'softmax' or 'cnn'")
