@@ -4,3 +4,4 @@ data/
 venv/
 TF tutorial.ipynb
 MNIST_data/
+.idea/
