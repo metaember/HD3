@@ -13,7 +13,8 @@ def run_test(mode, preproc, verbose):
 
     # some parameters
     nb_trainings = 2000
-    target_dim = 400
+    target_dim = 400  # initial dim is 28*28  784
+    apply_funcs = False
 
     if verbose:
         print("running, mode {}, proproc {}, verbose {}".format(mode,preproc,verbose))
@@ -29,33 +30,41 @@ def run_test(mode, preproc, verbose):
     #
 
     if preproc is None:
-        if verbose:
-            print("Skipping preprocessing")
-    elif preproc == "G":
+        data_transformed = data_formatted
+        if verbose: print("Skipping preprocessing")
+    else:
         assert int(math.sqrt(target_dim))**2 == target_dim, "Target dim must be a perfect square"
         assert math.sqrt(target_dim)%4 == 0, "The sqrt of the target dim must be divisible by 4"
 
-        t_G = trf.Transformer("g")
-        data_transformed_G = t_G.transform(data_formatted, target_dim)
+        if preproc == "G":
+            t_G = trf.Transformer("g")
+            data_transformed = t_G.transform(data_formatted, target_dim)
 
-        data_formatted = data_transformed_G
-    else:
-        raise NotImplemented("Not an implemented transformation")
+        elif preproc == "Gcirc":
+            t_Gcirc = trf.Transformer("g_circ")
+            data_transformed = t_Gcirc.transform(data_formatted, target_dim)
 
-        t_drop = trf.Transformer("drop")
-        data_transformed_drop = t_drop.transform(data_formatted, target_dim)
+        elif preproc == "drop":
+            t_drop = trf.Transformer("drop")
+            data_transformed = t_drop.transform(data_formatted, target_dim)
+        elif preproc == "HD3":
+            raise NotImplemented("HD3 is not implemented")
+            t_HD3 = trf.Transformer("hd3")
+            data_transformed = t_HD3.transform(data_formatted, target_dimension)
+        else:
+            raise NotImplemented("Not an implemented transformation")
 
-        t_Gcirc = trf.Transformer("g_circ")
-        data_transformed_Gcirc = t_Gcirc.transform(data_formatted, target_dim)
 
-        # t_HD3 = trf.Transformer("hd3")
-        # data_transformed_HD3 = t_HD3.transform(data_formatted, target_dimension)
+
+
 
     #
     # Applying functions to data
     #
-    f_sigmoid = fct.Functions("sigmoid")
-    data_transformed_G_function_sigmoid = f_sigmoid.apply(data_transformed_G)
+
+    if apply_funcs:
+        f_sigmoid = fct.Functions("sigmoid")
+        data_transformed = f_sigmoid.apply(data_transformed)
 
 
 
@@ -77,7 +86,7 @@ def run_test(mode, preproc, verbose):
 
 
     start_timing = time.clock(), time.time()
-    accuracy = classif.classify(data_formatted, 0.8, 0.2, 50, 1e-4, nb_trainings, verbose=verbose)
+    accuracy = classif.classify(data_transformed, 0.8, 0.2, 50, 1e-4, nb_trainings, verbose=verbose)
     end_timing = time.clock(), time.time()
 
     wall_time = end_timing[1] - start_timing[1]

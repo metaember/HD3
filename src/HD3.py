@@ -4,7 +4,7 @@ import argparse
 parser = argparse.ArgumentParser(description="Compare speed and accuracy of NN's using various preprocessing methods.")
 parser.add_argument("mode", help="Neural Net mode: 'softmax' or 'cnn' ?")
 parser.add_argument("-p", "--preprocess", help="How to preprocess the data? Default: nothing")
-parser.add_argument("-c", "--count", help = "How many sample pairs to use for the histograms? Default = 100")
+#parser.add_argument("-c", "--count", help = "How many sample pairs to use for the histograms? Default = 100", type=int)
 parser.add_argument("-d", "--dataset", help="What dataset to use? Default: mnist")
 parser.add_argument("-v", "--verbose", action="store_true",
                     help="increase output verbosity")
@@ -12,7 +12,7 @@ args = parser.parse_args()
 
 # constants
 MODES = ("none", "softmax", "cnn")
-PREPROC = (None,"G")
+PREPROC = (None, "G", "Gcirc", "drop", "HD3")
 DATASETS = ("mnist",)
 
 if args.dataset is None:
