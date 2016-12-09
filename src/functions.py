@@ -12,7 +12,7 @@ class Functions:
         """
 
         if self.type == "identity":
-            return dataset
+            return identity
         elif self.type == "sigmoid":
             return sigmoid
         elif self.type == "sigmoid_prime":
