@@ -5,11 +5,15 @@ import functions as fct
 import classifiers as cl
 
 import time
-
+import math
 
 
 
 def run_test(mode, preproc, verbose):
+
+    # some parameters
+    nb_trainings = 2000
+    target_dim = 400
 
     if verbose:
         print("running, mode {}, proproc {}, verbose {}".format(mode,preproc,verbose))
@@ -23,17 +27,29 @@ def run_test(mode, preproc, verbose):
     #
     # Applying transformations to data
     #
-    t_drop = trf.Transformer("drop")
-    data_transformed_drop = t_drop.transform(data_formatted, 500)
 
-    t_G = trf.Transformer("g")
-    data_transformed_G = t_G.transform(data_formatted, 500)
+    if preproc is None:
+        if verbose:
+            print("Skipping preprocessing")
+    elif preproc == "G":
+        assert int(math.sqrt(target_dim))**2 == target_dim, "Target dim must be a perfect square"
+        assert math.sqrt(target_dim)%4 == 0, "The sqrt of the target dim must be divisible by 4"
 
-    t_Gcirc = trf.Transformer("g_circ")
-    data_transformed_Gcirc = t_Gcirc.transform(data_formatted, 500)
+        t_G = trf.Transformer("g")
+        data_transformed_G = t_G.transform(data_formatted, target_dim)
 
-    # t_HD3 = trf.Transformer("hd3")
-    # data_transformed_HD3 = t_HD3.transform(data_formatted, target_dimension)
+        data_formatted = data_transformed_G
+    else:
+        raise NotImplemented("Not an implemented transformation")
+
+        t_drop = trf.Transformer("drop")
+        data_transformed_drop = t_drop.transform(data_formatted, target_dim)
+
+        t_Gcirc = trf.Transformer("g_circ")
+        data_transformed_Gcirc = t_Gcirc.transform(data_formatted, target_dim)
+
+        # t_HD3 = trf.Transformer("hd3")
+        # data_transformed_HD3 = t_HD3.transform(data_formatted, target_dimension)
 
     #
     # Applying functions to data
@@ -42,12 +58,7 @@ def run_test(mode, preproc, verbose):
     data_transformed_G_function_sigmoid = f_sigmoid.apply(data_transformed_G)
 
 
-    if preproc is None:
-        pass
-    elif preproc == "G":
-        data_formatted = data_transformed_G
-    else:
-        raise NotImplemented("Not an implemented transformation")
+
 
     #
     # Applying classifiers to data, returns accuracy and time
@@ -66,7 +77,7 @@ def run_test(mode, preproc, verbose):
 
 
     start_timing = time.clock(), time.time()
-    accuracy = classif.classify(data_formatted, 0.8, 0.2, 50, 1e-4, 2000, verbose=verbose)
+    accuracy = classif.classify(data_formatted, 0.8, 0.2, 50, 1e-4, nb_trainings, verbose=verbose)
     end_timing = time.clock(), time.time()
 
     wall_time = end_timing[1] - start_timing[1]

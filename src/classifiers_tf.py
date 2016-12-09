@@ -1,6 +1,6 @@
 import tensorflow as tf
 import numpy as np
-
+from math import sqrt
 
 # dataset = 2uple || dataset[0] = input in R_nbInput,dimensionInput || dataset[1] = labels in R_nbInput,dimensionOutput
 def classify_with_softmax_nn(dataset, percentage_train, percentage_test, batch_size, learning_rate):
@@ -84,11 +84,13 @@ def classify_with_conv_nn(dataset, percentage_train, percentage_test, batch_size
             return tf.nn.max_pool(x, ksize=[1, 2, 2, 1],
                          strides=[1, 2, 2, 1], padding='SAME')
 
+        new_size = int(sqrt(dataset[0].shape[1])) #default 28
+        new_mini_size = new_size // 4
 
         # Layer 1
         W_conv1 = weight_variable([5, 5, 1, 32])
         b_conv1 = bias_variable([32])
-        x_image = tf.reshape(x, [-1,28,28,1])
+        x_image = tf.reshape(x, [-1,new_size,new_size,1])
         h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)
         h_pool1 = max_pool_2x2(h_conv1)
 
@@ -99,9 +101,12 @@ def classify_with_conv_nn(dataset, percentage_train, percentage_test, batch_size
         h_pool2 = max_pool_2x2(h_conv2)
 
         # Densely connected layer
-        W_fc1 = weight_variable([7 * 7 * 64, 1024])
+        W_fc1 = weight_variable([new_mini_size * new_mini_size * 64, 1024]) # 7 * 7
         b_fc1 = bias_variable([1024])
-        h_pool2_flat = tf.reshape(h_pool2, [-1, 7*7*64])
+        sess.run(tf.global_variables_initializer())
+        
+
+        h_pool2_flat = tf.reshape(h_pool2, [-1, new_mini_size*new_mini_size*64]) # 7*7
         h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
 
         # dropout
