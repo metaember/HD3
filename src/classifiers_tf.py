@@ -50,7 +50,7 @@ def classify_with_softmax_nn(dataset, percentage_train, percentage_test, batch_s
 
 
 
-
+# dataset = 2uple || dataset[0] = input in R_nbInput,dimensionInput || dataset[1] = labels in R_nbInput,dimensionOutput
 def classify_with_conv_nn(dataset, percentage_train, percentage_test, batch_size, learning_rate, training_iterations, verbose):
 
 
@@ -130,7 +130,7 @@ def classify_with_conv_nn(dataset, percentage_train, percentage_test, batch_size
         labels = dataset[1]
         epochs_completed = 0
         index_in_epoch = 0
-        num_examples = images.shape[0]
+        num_examples = images.shape[0] * percentage_train
 
         def next_batch(batch_size):
             """
