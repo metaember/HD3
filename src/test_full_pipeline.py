@@ -9,8 +9,10 @@ import time
 
 
 
-def run_test(mode, verbose):
+def run_test(mode, preproc, verbose):
 
+    if verbose:
+        print("running, mode {}, proproc {}, verbose {}".format(mode,preproc,verbose))
 
     #
     # Loading and formatting data
@@ -39,9 +41,18 @@ def run_test(mode, verbose):
     f_sigmoid = fct.Functions("sigmoid")
     data_transformed_G_function_sigmoid = f_sigmoid.apply(data_transformed_G)
 
+
+    if preproc is None:
+        pass
+    elif preproc == "G":
+        data_formatted = data_transformed_G
+    else:
+        raise NotImplemented("Not an implemented transformation")
+
     #
     # Applying classifiers to data, returns accuracy and time
     # (we should also take into consideration the time to apply the transformations)
+    #
 
 
     if mode == "softmax":
@@ -72,4 +83,4 @@ if __name__ == "__main__":
     print()
     # params
     mode = "cnn" # cnn or softmax
-    run_test(mode, verbose=True)
+    run_test(mode,preproc = None, verbose=True)

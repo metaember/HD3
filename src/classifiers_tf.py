@@ -54,6 +54,7 @@ def classify_with_softmax_nn(dataset, percentage_train, percentage_test, batch_s
 def classify_with_conv_nn(dataset, percentage_train, percentage_test, batch_size, learning_rate, training_iterations, verbose):
 
 
+
         # Create the model
         x = tf.placeholder(tf.float32, [None, dataset[0].shape[1]])
         W = tf.Variable(tf.zeros([dataset[0].shape[1], dataset[1].shape[1]]))
