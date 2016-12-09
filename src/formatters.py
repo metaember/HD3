@@ -13,8 +13,8 @@
     both arguments of the implemented methods)
 
     Example : MNIST
-              dataset[0] in R_80000,784
-              dataset[1] in R_80000,10
+              dataset[0] in R_60000,784
+              dataset[1] in R_60000,10
 
     Note : Vectorised labels so it is easier to plug the dataset into
            TensorFlow NN
@@ -36,3 +36,11 @@ def format_dataset(dataset):
     formatted_dataset_vectorised_labels = np.array(list(map(vectorise_mnist_labels, formatted_datased_labels)))
 
     return (formatted_dataset_input, formatted_dataset_vectorised_labels)
+
+def normalize_dataset(dataset):
+
+    return (np.apply_along_axis(lambda a: a/np.linalg.norm(a), 1, dataset[0]), dataset[1])
+
+    # for i in range(dataset[0].shape[0]):
+    #     norm = np.linalg.norm(dataset[i])
+    #     dataset[0][i] /= norm
