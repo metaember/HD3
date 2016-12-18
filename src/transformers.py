@@ -16,17 +16,19 @@ class Transformer:
 
   def transform(self, dataset, target_dimension):
 
+    transformed_dataset = (dataset[0].copy(), dataset[1].copy())
+
     if self.type == "drop":
-        matrix = np.diag(np.ones(dataset[0].shape[1]))[:, 0:target_dimension]
-        return (np.matmul(dataset[0], matrix), dataset[1])
+        matrix = np.diag(np.ones(transformed_dataset[0].shape[1]))[:, 0:target_dimension]
+        return (np.matmul(transformed_dataset[0], matrix), dataset[1])
     elif self.type == "g":
-        matrix = np.random.randn(dataset[0].shape[1], target_dimension)
-        return (np.matmul(dataset[0], matrix), dataset[1])
+        matrix = np.random.randn(transformed_dataset[0].shape[1], target_dimension)
+        return (np.matmul(transformed_dataset[0], matrix), dataset[1])
     elif self.type == "g_circ":
-        matrix = np.transpose(linalg.circulant(np.random.randn(dataset[0].shape[1]))[0:target_dimension, :])
-        return (np.matmul(dataset[0], matrix), dataset[1])
+        matrix = np.transpose(linalg.circulant(np.random.randn(transformed_dataset[0].shape[1]))[0:target_dimension, :])
+        return (np.matmul(transformed_dataset[0], matrix), dataset[1])
     elif self.type == "hd3":
-        return (self.HD3(dataset[0]), dataset[1])
+        return (self.HD3(transformed_dataset[0]), transformed_dataset[1])
 
     return
 

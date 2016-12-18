@@ -5,35 +5,41 @@ import numpy as np
 import random
 import math
 
+def generate_pairs_points(dataset, number_of_pairs):
+  pairs_of_point = np.zeros(number_of_pairs, dtype=[('first_image','i4'), ('second_image','i4')])
+
+  for i in range(number_of_pairs):
+    pairs_of_point[i] = (random.randint(0, dataset[0].shape[1]), random.randint(0, dataset[0].shape[1]))
+  return pairs_of_point
 
 class Plotter:
 
-  def __init__(self, type, number_pairs):
+  def __init__(self, type, pairs_of_point):
     self.type = type
-    self.number_pairs = number_pairs
+    self.pairs_of_point = pairs_of_point
 
   def plot(self, dataset1, dataset2):
 
     if self.type == "euclidian":
-      distances = self.distances_euclidian(dataset1, dataset2, self.number_pairs)
+      distances = self.distances_euclidian(dataset1, dataset2, self.pairs_of_point)
       self.plot_util(distances)
     elif self.type == "angular":
-      distances = self.distances_angular(dataset1, dataset2, self.number_pairs)
+      distances = self.distances_angular(dataset1, dataset2, self.pairs_of_point)
       self.plot_util(distances)
     elif self.type == "cross":
-      distances1 = self.distances_euclidian(dataset1, dataset2, self.number_pairs)
-      distances2 = self.distances_angular(dataset1, dataset2, self.number_pairs)
+      distances1 = self.distances_euclidian(dataset1, dataset2, self.pairs_of_point)
+      distances2 = self.distances_angular(dataset1, dataset2, self.pairs_of_point)
       self.plot_util2(distances1, distances2)
 
 
   def distances_euclidian(self, dataset1, dataset2, number_pairs):
 
-    euclidian_distances = np.zeros(self.number_pairs)
+    euclidian_distances = np.zeros(len(self.pairs_of_point))
 
-    for i_pair in range(self.number_pairs):
-      i = random.randint(0, dataset1[0].shape[1])
-      j = random.randint(0, dataset1[0].shape[1])
-      euclidian_distances[i_pair] = np.linalg.norm(dataset1[0][i]-dataset1[0][j])/np.linalg.norm(dataset2[0][i]-dataset2[0][j])
+    for i_pair in range(len(self.pairs_of_point)):
+      image_i = self.pairs_of_point[i_pair][0]
+      image_j = self.pairs_of_point[i_pair][1]
+      euclidian_distances[i_pair] = np.linalg.norm(dataset1[0][image_i]-dataset1[0][image_j])/np.linalg.norm(dataset2[0][image_i]-dataset2[0][image_j])
 
     return euclidian_distances
 
@@ -71,10 +77,10 @@ class Plotter:
     skewness = round(sp.stats.skew(distances), 2)
     kurtosis = round(sp.stats.kurtosis(distances), 2)
 
-    print(mean)
-    print(std)
-    print(skewness)
-    print(kurtosis)
+    print("Mean is {}".format(mean))
+    print("Std is {}".format(std))
+    print("Skewness is {}".format(skewness))
+    print("Kurtosis is {}".format(kurtosis))
 
     plt.hist(distances, color='b', bins=distances.shape[0]//10)
     plt.legend()

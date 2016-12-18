@@ -39,8 +39,6 @@ def format_dataset(dataset):
 
 def normalize_dataset(dataset):
 
-    return (np.apply_along_axis(lambda a: a/np.linalg.norm(a), 1, dataset[0]), dataset[1])
+    normalized_dataset = (dataset[0].copy(), dataset[1].copy())
 
-    # for i in range(dataset[0].shape[0]):
-    #     norm = np.linalg.norm(dataset[i])
-    #     dataset[0][i] /= norm
+    return (np.apply_along_axis(lambda a: a/np.linalg.norm(a), 1, normalized_dataset[0]), normalized_dataset[1])

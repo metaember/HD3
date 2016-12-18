@@ -1,6 +1,6 @@
 import numpy as np
 
-class Functions:
+class Function:
 
     def __init__(self, type):
         self.type = type
@@ -31,10 +31,13 @@ class Functions:
         """
         Apply a function over a dataset.
         """
+
+        function_appplied_dataset = (dataset[0].copy(), dataset[1].copy())
+
         if self.type == "identity":
-            return dataset
+            return function_appplied_dataset
         else:
-            return (np.apply_along_axis(self.func, 0, dataset[0]), dataset[1])
+            return (np.apply_along_axis(self.func, 0, function_appplied_dataset[0]), function_appplied_dataset[1])
 
 
 def identity(z):
